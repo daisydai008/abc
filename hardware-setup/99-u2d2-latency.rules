@@ -1,0 +1,12 @@
+# Set FTDI latency_timer=1ms on U2D2 plug-in (persistent across reboots/replug).
+# Required: GelloLeaderNode._verify_latency_timer() raises if latency_timer != 1
+# (abc/deploy/robot/leaders/gello_leader.py).
+#
+# Install on the Linux workstation:
+#   sudo cp 99-u2d2-latency.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+#
+# Verify after replug:
+#   cat /sys/bus/usb-serial/devices/ttyUSB0/latency_timer   # expect: 1
+
+ACTION=="add", SUBSYSTEM=="usb-serial", DRIVER=="ftdi_sio", ATTR{latency_timer}="1"
